@@ -7,8 +7,6 @@ FROM ubuntu:${UBUNTU_VERSION}
 
 WORKDIR /srcei
 
-ARG API_PORT
-
 # Installing PostgreSQL 13 server
 RUN apt-get update --quiet && apt-get install --quiet -y \
         wget gnupg software-properties-common tree \
@@ -48,6 +46,7 @@ RUN /etc/init.d/postgresql start \
     && psql --file="data.sql"
 
 # Exposing API port
+ARG API_PORT
 EXPOSE ${API_PORT}
 
 # Command for executing the API server and outputting to stdout
