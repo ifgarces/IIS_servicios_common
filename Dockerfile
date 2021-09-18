@@ -37,6 +37,9 @@ COPY ../app.js .
 COPY ../package.json .
 COPY ../package-lock.json .
 
+# Copying startup script
+COPY ../IIS_servicios_common/startup.sh .
+
 # Installing Node dependencies
 RUN npm install
 
@@ -50,4 +53,4 @@ ARG API_PORT
 EXPOSE ${API_PORT}
 
 # Command for executing the API server and outputting to stdout
-CMD [ "/bin/node", "app.js" ]
+CMD [ "/bin/sh", "-x", "startup.sh" ]
