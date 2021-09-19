@@ -35,7 +35,6 @@ COPY ../routes routes
 COPY ../.env .
 COPY ../app.js .
 COPY ../package.json .
-COPY ../package-lock.json .
 
 # Copying startup script
 COPY ../IIS_servicios_common/startup.sh .
