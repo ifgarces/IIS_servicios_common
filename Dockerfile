@@ -36,9 +36,6 @@ COPY ../.env .
 COPY ../app.js .
 COPY ../package.json .
 
-# Copying startup script
-COPY ../IIS_servicios_common/startup.sh .
-
 # Installing Node dependencies
 RUN npm install
 
@@ -51,5 +48,6 @@ RUN /etc/init.d/postgresql start \
 ARG API_PORT
 EXPOSE ${API_PORT}
 
-# Command for executing the API server and outputting to stdout
-CMD [ "/bin/sh", "-x", "startup.sh" ]
+# Copying startup script and executing on container start
+COPY ../IIS_servicios_common/startup.sh .
+CMD [ "/bin/bash", "startup.sh" ]

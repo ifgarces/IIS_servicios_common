@@ -4,5 +4,7 @@
 # executed when the container starts.
 # --------------------------------------------------------------------------------------------------
 
+set -xeu
+
 /etc/init.d/postgresql start
 /bin/node app.js
