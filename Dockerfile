@@ -9,7 +9,7 @@ WORKDIR /srcei
 
 # Installing PostgreSQL 13 server
 RUN apt-get update --quiet && apt-get install --quiet -y \
-        wget gnupg software-properties-common tree \
+        wget gnupg software-properties-common dos2unix tree nano \
     && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > \
         /etc/apt/sources.list.d/pgdg.list \
@@ -36,6 +36,12 @@ COPY ../.env .
 COPY ../app.js .
 COPY ../package.json .
 
+# Copying startup script
+COPY ../IIS_servicios_common/startup.sh .
+
+# Converting Winodws end-of-line to Linux style (LF) for all files, as Git is dumb and didn't let me from outside
+RUN find . -type f -exec dos2unix --quiet {} \;
+
 # Installing Node dependencies
 RUN npm install
 
@@ -48,6 +54,5 @@ RUN /etc/init.d/postgresql start \
 ARG API_PORT
 EXPOSE ${API_PORT}
 
-# Copying startup script and executing on container start
-COPY ../IIS_servicios_common/startup.sh .
+# Executing startup script on container start
 CMD [ "/bin/bash", "startup.sh" ]
