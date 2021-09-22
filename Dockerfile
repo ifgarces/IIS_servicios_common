@@ -7,7 +7,7 @@ FROM ubuntu:${UBUNTU_VERSION}
 
 WORKDIR /srcei
 
-# Installing PostgreSQL 13 server
+# Installing PostgreSQL 13 server and some utility packages for debugging
 RUN apt-get update --quiet && apt-get install --quiet -y \
         wget gnupg software-properties-common dos2unix tree nano \
     && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
@@ -24,20 +24,20 @@ RUN /etc/init.d/postgresql start \
     && su - postgres -c "psql --command=\"CREATE DATABASE root OWNER root;\""
 
 # Copying database files
-COPY ../database/data.sql .
-COPY ../database/tables.sql .
+COPY ./database/data.sql .
+COPY ./database/tables.sql .
 
 # Copying Node.js project files
-COPY ../models models
-COPY ../controllers controllers
-COPY ../public public
-COPY ../routes routes
-COPY ../.env .
-COPY ../app.js .
-COPY ../package.json .
+COPY ./models models
+COPY ./controllers controllers
+COPY ./public public
+COPY ./routes routes
+COPY ./.env .
+COPY ./app.js .
+COPY ./package.json .
 
 # Copying startup script
-COPY ../IIS_servicios_common/startup.sh .
+COPY ./IIS_servicios_common/startup.sh .
 
 # Converting Winodws end-of-line to Linux style (LF) for all files, as Git is dumb and didn't let me from outside
 RUN find . -type f -exec dos2unix --quiet {} \;
