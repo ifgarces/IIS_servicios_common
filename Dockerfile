@@ -5,7 +5,7 @@
 ARG UBUNTU_VERSION
 FROM ubuntu:${UBUNTU_VERSION}
 
-WORKDIR /srcei
+WORKDIR /workdir
 
 # Installing PostgreSQL 13 server and some utility packages for debugging
 RUN apt-get update --quiet && apt-get install --quiet -y \
